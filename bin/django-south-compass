@@ -59,7 +59,7 @@ class MigrationList(object):
             item.migrate(self.manage_cmd, self.options)
             
         # Need to clean up files that were fetched for migration
-        for item in self.items
+        for item in self.items:
             item.clean()
             
             
