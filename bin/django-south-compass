@@ -86,7 +86,11 @@ class Migration(object):
     def migrate(self, manage_cmd, options):
         if self.direction == 'B':
             os.system('git checkout %s %s%s/migrations' % (self.old, self.prefix, self.app))
-        cmd = 'cat <(echo "yes") - | %s migrate %s %s' % (manage_cmd, self.app, self.migration)
+        cmd = '%s migrate %s %s' % (manage_cmd, self.app, self.migration)
+        
+        # This will auto-respond "yes" to all migration questions (stale content type)
+        if options.auto_yes:
+            cmd = "yes yes | %s" % cmd
         print cmd
         os.system(cmd)
     
@@ -121,12 +125,15 @@ def post_checkout(old, new, options):
     migrations.plan()
     migrations.migrate_all()
 
-def main():
 
+def main():
     parser = OptionParser()
 
     parser.add_option("-m", "--manage")
     parser.add_option("-s", "--settings")
+    # Sometimes migrations will prompt to delete stale content types. 
+    # This option will cause an auto-response of "yes"
+    parser.add_option("-y", "--auto-yes", action="store_true")
 
     options, args = parser.parse_args()
 
@@ -146,6 +153,8 @@ def main():
                 cmd += ' --manage %s' % options.manage
             if options.settings:
                 cmd += ' --settings %s' % options.settings
+            if options.auto_yes:
+                cmd += ' --auto-yes'
 
             f = file('.git/hooks/post-checkout', 'w')
             f.write('#!/bin/bash\n')
