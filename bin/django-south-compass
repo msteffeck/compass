@@ -57,7 +57,12 @@ class MigrationList(object):
     def migrate_all(self):
         for item in self.items:
             item.migrate(self.manage_cmd, self.options)
-
+            
+        # Need to clean up files that were fetched for migration
+        for item in self.items
+            item.clean()
+            
+            
 class Migration(object):
 
     def __init__(self, app, migration, old, direction="F", prefix=''):
@@ -84,6 +89,8 @@ class Migration(object):
         cmd = '%s migrate %s %s' % (manage_cmd, self.app, self.migration)
         print cmd
         os.system(cmd)
+    
+    def clean(self):
         if self.direction == 'B':
             os.system('git reset HEAD %s %s%s/migrations' % (self.old, self.prefix, self.app))
             os.system('git clean -f %s %s%s/migrations' % (self.old, self.prefix, self.app))
