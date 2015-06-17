@@ -86,7 +86,7 @@ class Migration(object):
     def migrate(self, manage_cmd, options):
         if self.direction == 'B':
             os.system('git checkout %s %s%s/migrations' % (self.old, self.prefix, self.app))
-        cmd = '%s migrate %s %s' % (manage_cmd, self.app, self.migration)
+        cmd = 'cat <(echo "yes") - | %s migrate %s %s' % (manage_cmd, self.app, self.migration)
         print cmd
         os.system(cmd)
     
