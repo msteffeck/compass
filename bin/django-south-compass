@@ -143,10 +143,7 @@ def main():
             f = file('.git/hooks/post-checkout', 'w')
             f.write('#!/bin/bash\n')
             f.write('\n')
-            f.write('export GIT_DIR_TEMP=$GIT_DIR\n')
-            f.write('export GIT_DIR=`pwd`\n')
             f.write(cmd)
-            f.write('export GIT_DIR=$GIT_DIR_TEMP\n')
             f.close()
             os.system('chmod +x .git/hooks/post-checkout')
             print """
