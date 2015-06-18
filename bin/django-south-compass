@@ -2,7 +2,9 @@
 
 import os
 import re
+from subprocess import Popen, PIPE
 import sys
+import time
 
 from itertools import groupby
 from optparse import OptionParser
@@ -87,12 +89,14 @@ class Migration(object):
         if self.direction == 'B':
             os.system('git checkout %s %s%s/migrations' % (self.old, self.prefix, self.app))
         cmd = '%s migrate %s %s' % (manage_cmd, self.app, self.migration)
-        
-        # This will auto-respond "yes" to all migration questions (stale content type)
-        if options.auto_yes:
-            cmd = "yes yes | %s" % cmd
         print cmd
-        os.system(cmd)
+        p = Popen(cmd.split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        if options.auto_yes:
+            while p.poll() is None:
+                p.stdin.write("yes\n")
+                time.sleep(1)
+        print p.communicate()[0]
+            
     
     def clean(self):
         if self.direction == 'B':
