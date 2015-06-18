@@ -1,16 +1,15 @@
-django-south-compass
+django-migration-compass
 ====================
 
-.. image:: https://travis-ci.org/agiliq/compass.png?branch=master
-   :target: https://travis-ci.org/agiliq/compass
-   :alt: Build Status
 
 What is it?
 -----------
 
-Django south compass is a tool to guide your south migrations.
+Django migration compass is a tool to guide your django migrations through git branch switches.
 
-It is a git hook that keeps your south migrations in sync with your repository.
+It is a git hook that keeps your django migrations in sync with your repository as you move around.
+
+Note: the packages and executable are still named django-south because I haven't changed them yet, but there are no dependencies on South. This is meant for Django 1.7+
 
 Installation
 ------------
@@ -59,16 +58,8 @@ License
 
 3 Clause BSD.
 
-Bug report and Help
--------------------
-
-For bug reports, open a github ticket. Patches gratefully accepted. Need help? `Contact us here`_
-
-.. _contact us here: http://agiliq.com/contactus
 
 Thanks
 ------
 
-Django south compass was inspired by `hookup`_ for rails.
-
-.. _hookup: https://github.com/tpope/hookup
+Django migration compass was almost entirely written by agiliq. I just tweaked it for modern Django. 
