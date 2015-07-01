@@ -95,7 +95,9 @@ class Migration(object):
             while p.poll() is None:
                 p.stdin.write("yes\n")
                 time.sleep(1)
-        print p.communicate()[0]
+        com = p.communicate()
+        print com[0]
+        print >> sys.stderr, com[1]
             
     
     def clean(self):
